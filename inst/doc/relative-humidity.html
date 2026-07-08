@@ -551,7 +551,7 @@ December 2025, obtained from the National Institute of Meteorology
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(SimplexRegression)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">data</span>(RelativeHumidity, <span class="at">package =</span> <span class="st">&quot;SimplexRegression&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">head</span>(RelativeHumidity, <span class="dv">5</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt;         Date    RH   Ins  Ins2   Pre  Pre2 Neb    AP   MT  WS Dir</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt;         date    rh   ins  ins2   pre  pre2 neb    ap   mt  ws dir</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; 1 2000-01-31 0.763 150.0 150.0 130.0 130.0 8.0 883.9 26.5 2.5  32</span></span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; 2 2000-02-29 0.756 145.7 145.7 168.3 168.3 7.5 885.6 26.7 2.0   0</span></span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; 3 2000-03-31 0.780 164.9 164.9 229.6 229.6 7.7 884.9 26.0 2.6  14</span></span>
@@ -566,47 +566,47 @@ December 2025, obtained from the National Institute of Meteorology
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>Date</code></td>
+<td><code>date</code></td>
 <td>Observation date (end of month)</td>
 </tr>
 <tr class="even">
-<td><code>RH</code></td>
+<td><code>rh</code></td>
 <td>Monthly average relative humidity, rescaled to <span class="math inline">\((0,1)\)</span></td>
 </tr>
 <tr class="odd">
-<td><code>Ins</code></td>
+<td><code>ins</code></td>
 <td>Total insolation (hours), with two missing values</td>
 </tr>
 <tr class="even">
-<td><code>Ins2</code></td>
+<td><code>ins2</code></td>
 <td>Total insolation with imputed missing values</td>
 </tr>
 <tr class="odd">
-<td><code>Pre</code></td>
+<td><code>pre</code></td>
 <td>Total precipitation (mm), with two missing values</td>
 </tr>
 <tr class="even">
-<td><code>Pre2</code></td>
+<td><code>pre2</code></td>
 <td>Total precipitation with imputed missing values</td>
 </tr>
 <tr class="odd">
-<td><code>Neb</code></td>
+<td><code>neb</code></td>
 <td>Average cloudiness (tenths)</td>
 </tr>
 <tr class="even">
-<td><code>AP</code></td>
+<td><code>ap</code></td>
 <td>Average atmospheric pressure (hPa)</td>
 </tr>
 <tr class="odd">
-<td><code>MT</code></td>
+<td><code>mt</code></td>
 <td>Average maximum temperature (°C)</td>
 </tr>
 <tr class="even">
-<td><code>WS</code></td>
+<td><code>ws</code></td>
 <td>Average wind speed (m/s)</td>
 </tr>
 <tr class="odd">
-<td><code>Dir</code></td>
+<td><code>dir</code></td>
 <td>Predominant wind direction (degrees)</td>
 </tr>
 </tbody>
@@ -617,25 +617,25 @@ December 2025, obtained from the National Institute of Meteorology
 <span class="math inline">\(s_i = \sin(2\pi i/12)\)</span> and <span class="math inline">\(c_i = \cos(2\pi i/12)\)</span>, and a rainy-season
 dummy equal to 1 for October, November, and December (the rainy season
 in Brasília) and 0 otherwise.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>rh       <span class="ot">&lt;-</span> RelativeHumidity</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>rh<span class="sc">$</span>hs    <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(rh)) <span class="sc">/</span> <span class="dv">12</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>rh<span class="sc">$</span>hc    <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(rh)) <span class="sc">/</span> <span class="dv">12</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>rh<span class="sc">$</span>dummy <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.integer</span>(<span class="fu">format</span>(rh<span class="sc">$</span>Date, <span class="st">&quot;%m&quot;</span>)) <span class="sc">%in%</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">12</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>RH       <span class="ot">&lt;-</span> RelativeHumidity</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>RH<span class="sc">$</span>hs    <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(RH)) <span class="sc">/</span> <span class="dv">12</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>RH<span class="sc">$</span>hc    <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(RH)) <span class="sc">/</span> <span class="dv">12</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>RH<span class="sc">$</span>dummy <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.integer</span>(<span class="fu">format</span>(RH<span class="sc">$</span>date, <span class="st">&quot;%m&quot;</span>)) <span class="sc">%in%</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">12</span>)</span></code></pre></div>
 </div>
 <div id="descriptive-summary" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Descriptive
 summary</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summary</span>(rh<span class="sc">$</span>RH)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summary</span>(RH<span class="sc">$</span>rh)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;   0.301   0.523   0.661   0.635   0.756   0.851</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="st">&quot;Std. dev.: %.4f  |  Skewness: %.4f</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">sd</span>(rh<span class="sc">$</span>RH),</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">mean</span>(((rh<span class="sc">$</span>RH <span class="sc">-</span> <span class="fu">mean</span>(rh<span class="sc">$</span>RH)) <span class="sc">/</span> <span class="fu">sd</span>(rh<span class="sc">$</span>RH))<span class="sc">^</span><span class="dv">3</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">sd</span>(RH<span class="sc">$</span>rh),</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">mean</span>(((RH<span class="sc">$</span>rh <span class="sc">-</span> <span class="fu">mean</span>(RH<span class="sc">$</span>rh)) <span class="sc">/</span> <span class="fu">sd</span>(RH<span class="sc">$</span>rh))<span class="sc">^</span><span class="dv">3</span>)</span>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>))</span>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; Std. dev.: 0.1331  |  Skewness: -0.4660</span></span></code></pre></div>
 <p>The response ranges from 0.301 to 0.851, with mean 0.635 and moderate
-left skewness (<span class="math inline">\(-0.47\)</span>), consistent
+left skewness (<span class="math inline">\(-0.466\)</span>), consistent
 with a higher concentration of RH values above the mean during the
 wetter months. These features support the use of a unit-interval
 distribution such as the simplex.</p>
@@ -647,13 +647,13 @@ distribution such as the simplex.</p>
 The two-part formula <code>y ~ x | z</code> specifies the mean submodel
 (left of <code>|</code>) and the dispersion submodel (right of
 <code>|</code>) simultaneously. The mean submodel includes insolation
-(<code>Ins2</code>), maximum temperature (<code>MT</code>), wind speed
-(<code>WS</code>), harmonic terms (<code>hs</code>, <code>hc</code>) to
+(<code>ins2</code>), maximum temperature (<code>mt</code>), wind speed
+(<code>ws</code>), harmonic terms (<code>hs</code>, <code>hc</code>) to
 capture seasonality, a rainy-season dummy, and its interaction with wind
 speed. The dispersion submodel contains only precipitation
-(<code>Pre2</code>), allowing the variability of RH to depend on
+(<code>pre2</code>), allowing the variability of RH to depend on
 rainfall.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>formula <span class="ot">&lt;-</span> RH <span class="sc">~</span> Ins2 <span class="sc">+</span> MT <span class="sc">+</span> WS <span class="sc">+</span> hs <span class="sc">+</span> hc <span class="sc">+</span> dummy <span class="sc">+</span> <span class="fu">I</span>(dummy <span class="sc">*</span> WS) <span class="sc">|</span> Pre2</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>formula <span class="ot">&lt;-</span> rh <span class="sc">~</span> ins2 <span class="sc">+</span> mt <span class="sc">+</span> ws <span class="sc">+</span> hs <span class="sc">+</span> hc <span class="sc">+</span> dummy <span class="sc">+</span> <span class="fu">I</span>(dummy <span class="sc">*</span> ws) <span class="sc">|</span> pre2</span></code></pre></div>
 </div>
 <div id="parametric-mean-link-functions" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Parametric Mean Link
@@ -669,8 +669,8 @@ logit link; values <span class="math inline">\(\lambda \neq 1\)</span>
 introduce asymmetry in the link, adding flexibility to capture
 non-standard relationships between the mean response and the linear
 predictor.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fit_p1 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;plogit1&quot;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>fit_p2 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;plogit2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fit_p1 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;plogit1&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>fit_p2 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;plogit2&quot;</span>)</span></code></pre></div>
 </div>
 <div id="penalized-scout-score-and-information-criteria" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Penalized Scout Score
@@ -695,9 +695,9 @@ lowest penalized criterion is selected.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">penalized.ic</span>(fit_p1, fit_p2, <span class="at">kappa =</span> <span class="fl">0.1</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Penalized information criteria values (kappa = 0.100):</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;        df    AICc    BICc   HQICc</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; fit_p1 11 -1352.6 -1311.4 -1336.1</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; fit_p2 11 -1349.3 -1308.1 -1332.8</span></span></code></pre></div>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;        df      AICc      BICc     HQICc</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; fit_p1 11 -1352.561 -1311.388 -1336.105</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; fit_p2 11 -1349.259 -1308.086 -1332.803</span></span></code></pre></div>
 <p>All penalized criteria unanimously select the <code>plogit1</code>
 link. The Scout Score of <code>fit_p1</code> is substantially higher
 than that of <code>fit_p2</code>, and all three penalized information
@@ -712,11 +712,11 @@ Functions</h1>
 <p>We also fit models with all five fixed mean links supported by the
 package. Fixed links do not include an additional parameter and are
 therefore always comparable using standard (unpenalized) criteria.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>fit_loglog  <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;loglog&quot;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>fit_logit   <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;logit&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>fit_probit  <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;probit&quot;</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>fit_cauchit <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;cauchit&quot;</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>fit_cloglog <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;cloglog&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>fit_loglog  <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;loglog&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>fit_logit   <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;logit&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>fit_probit  <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;probit&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>fit_cauchit <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;cauchit&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>fit_cloglog <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;cloglog&quot;</span>)</span></code></pre></div>
 </div>
 <div id="comparing-all-candidates" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Comparing all
@@ -757,46 +757,44 @@ numerical optimization procedure.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">summary</span>(fit_loglog)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; simplexreg(formula = formula, data = rh, link.mu = &quot;loglog&quot;)</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; simplexreg(formula = formula, data = RH, link.mu = &quot;loglog&quot;)</span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; Quantile residuals:</span></span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; -2.585 -0.635 -0.002  0.644  2.992 </span></span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; Coefficients (mean model with loglog link):</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt;                    Estimate    Std. Error  z value Pr(&gt;|z|)    </span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; (Intercept)    3.5101214213  0.1335820307  26.2769   &lt;2e-16 ***</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; Ins2          -0.0049290663  0.0002225212 -22.1510   &lt;2e-16 ***</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; MT            -0.0592798832  0.0049701318 -11.9272   &lt;2e-16 ***</span></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; WS            -0.0345373509  0.0133605126  -2.5850   0.0097 ** </span></span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; hs             0.2797251376  0.0121416923  23.0384   &lt;2e-16 ***</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; hc             0.0428113435  0.0185577603   2.3069   0.0211 *  </span></span>
-<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; dummy          0.3374909598  0.0661928168   5.0986   &lt;2e-16 ***</span></span>
-<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; I(dummy * WS) -0.1040241692  0.0302313202  -3.4409   0.0006 ***</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; (Intercept)    3.510121   0.133582   26.28  &lt; 2e-16 ***</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; ins2          -0.004929   0.000223  -22.15  &lt; 2e-16 ***</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; mt            -0.059280   0.004970  -11.93  &lt; 2e-16 ***</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; ws            -0.034537   0.013361   -2.59  0.00974 ** </span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; hs             0.279725   0.012142   23.04  &lt; 2e-16 ***</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; hc             0.042811   0.018558    2.31  0.02106 *  </span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; dummy          0.337491   0.066193    5.10  3.4e-07 ***</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; I(dummy * ws) -0.104024   0.030231   -3.44  0.00058 ***</span></span>
 <span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; Dispersion coefficients (dispersion model with log link):</span></span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;                  Estimate    Std. Error  z value Pr(&gt;|z|)    </span></span>
-<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; (Intercept) -2.8324455820  0.1142028509 -24.8019   &lt;2e-16 ***</span></span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; Pre2         0.0020288924  0.0006649587   3.0512   0.0023 ** </span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; (Intercept) -2.832446   0.114203  -24.80   &lt;2e-16 ***</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; pre2         0.002029   0.000665    3.05   0.0023 ** </span></span>
 <span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1 </span></span>
 <span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; Log-likelihood: 687.47 on 10 Df</span></span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; AIC: -1354.9</span></span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; BIC: -1317.5</span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; HQIC: -1340</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; Pseudo R-squared (Nagelkerke): 0.95318</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; Pseudo R-squared (Ferrari and Cribari-Neto): 0.95212</span></span>
-<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co">#&gt; P-squared (Espinheira-Silva-Lima): 0.93404</span></span>
-<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a><span class="co">#&gt; Number of observations: 312</span></span>
-<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="co">#&gt; Number of iterations: 101 (BFGS) + 7 (Fisher scoring)</span></span></code></pre></div>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; Log-likelihood: 687.473 on 10 Df</span></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; AIC: -1354.945  BIC: -1317.515  HQIC: -1339.986</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; Pseudo R-squared (Nagelkerke): 0.953</span></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; Pseudo R-squared (Ferrari and Cribari-Neto): 0.952</span></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; P-squared (Espinheira, Silva and Lima): 0.934</span></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; Number of observations: 312</span></span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co">#&gt; Number of iterations: 18 (BFGS) + 7 (Fisher scoring)</span></span></code></pre></div>
 <p>All regression coefficients are statistically significant at the 5%
 level. The harmonic terms (<code>hs</code>, <code>hc</code>) and the
 rainy-season dummy capture the strong seasonal pattern in RH, while
-insolation (<code>Ins2</code>), maximum temperature (<code>MT</code>),
-and wind speed (<code>WS</code>) explain the within-season variation.
+insolation (<code>ins2</code>), maximum temperature (<code>mt</code>),
+and wind speed (<code>ws</code>) explain the within-season variation.
 The Nagelkerke and Ferrari–Cribari-Neto pseudo-<span class="math inline">\(R^2\)</span> values both exceed 0.95, indicating
-an excellent fit. The model converged in 101 BFGS iterations followed by
+an excellent fit. The model converged in 18 BFGS iterations followed by
 7 Fisher scoring steps.</p>
 </div>
 <div id="standard-information-criteria" class="section level1" number="7">
@@ -844,43 +842,43 @@ full model or for each submodel separately, controlled by the
 or <code>&quot;dispersion&quot;</code>). The <code>vcov</code> method returns the
 corresponding variance-covariance matrix.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">coef</span>(fit_loglog)                          <span class="co"># full coefficient vector</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt;              (Intercept)                     Ins2 </span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt;              (Intercept)                     ins2 </span></span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt;                3.5101214               -0.0049291 </span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;                       MT                       WS </span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;                       mt                       ws </span></span>
 <span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt;               -0.0592799               -0.0345374 </span></span>
 <span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt;                       hs                       hc </span></span>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt;                0.2797251                0.0428113 </span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;                    dummy            I(dummy * WS) </span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;                    dummy            I(dummy * ws) </span></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt;                0.3374910               -0.1040242 </span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; (dispersion)_(Intercept)        (dispersion)_Pre2 </span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; (dispersion)_(Intercept)        (dispersion)_pre2 </span></span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;               -2.8324456                0.0020289</span></span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="fu">coef</span>(fit_loglog, <span class="at">model =</span> <span class="st">&quot;mean&quot;</span>)          <span class="co"># mean submodel only</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;   (Intercept)          Ins2            MT            WS            hs </span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;   (Intercept)          ins2            mt            ws            hs </span></span>
 <span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt;     3.5101214    -0.0049291    -0.0592799    -0.0345374     0.2797251 </span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt;            hc         dummy I(dummy * WS) </span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt;            hc         dummy I(dummy * ws) </span></span>
 <span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt;     0.0428113     0.3374910    -0.1040242</span></span>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="fu">coef</span>(fit_loglog, <span class="at">model =</span> <span class="st">&quot;dispersion&quot;</span>)    <span class="co"># dispersion submodel only</span></span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; (Intercept)        Pre2 </span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; (Intercept)        pre2 </span></span>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt;  -2.8324456   0.0020289</span></span>
 <span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">vcov</span>(fit_loglog, <span class="at">model =</span> <span class="st">&quot;mean&quot;</span>), <span class="dv">6</span>)  <span class="co"># vcov of mean submodel</span></span>
-<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt;               (Intercept)   Ins2        MT        WS        hs</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt;               (Intercept)   ins2        mt        ws        hs</span></span>
 <span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; (Intercept)      0.017844  9e-06 -0.000627 -0.001014 -0.000893</span></span>
-<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; Ins2             0.000009  0e+00 -0.000001 -0.000001  0.000000</span></span>
-<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; MT              -0.000627 -1e-06  0.000025  0.000032  0.000022</span></span>
-<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; WS              -0.001014 -1e-06  0.000032  0.000179  0.000076</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; ins2             0.000009  0e+00 -0.000001 -0.000001  0.000000</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; mt              -0.000627 -1e-06  0.000025  0.000032  0.000022</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; ws              -0.001014 -1e-06  0.000032  0.000179  0.000076</span></span>
 <span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; hs              -0.000893  0e+00  0.000022  0.000076  0.000147</span></span>
 <span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; hc               0.001378  3e-06 -0.000063 -0.000112 -0.000044</span></span>
 <span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; dummy           -0.002718 -1e-06  0.000071  0.000403  0.000274</span></span>
-<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; I(dummy * WS)    0.000841  1e-06 -0.000023 -0.000157 -0.000066</span></span>
-<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt;                      hc     dummy I(dummy * WS)</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; I(dummy * ws)    0.000841  1e-06 -0.000023 -0.000157 -0.000066</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt;                      hc     dummy I(dummy * ws)</span></span>
 <span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; (Intercept)    0.001378 -0.002718      0.000841</span></span>
-<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; Ins2           0.000003 -0.000001      0.000001</span></span>
-<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; MT            -0.000063  0.000071     -0.000023</span></span>
-<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; WS            -0.000112  0.000403     -0.000157</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; ins2           0.000003 -0.000001      0.000001</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; mt            -0.000063  0.000071     -0.000023</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; ws            -0.000112  0.000403     -0.000157</span></span>
 <span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; hs            -0.000044  0.000274     -0.000066</span></span>
 <span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="co">#&gt; hc             0.000344 -0.000353      0.000088</span></span>
 <span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a><span class="co">#&gt; dummy         -0.000353  0.004381     -0.001892</span></span>
-<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a><span class="co">#&gt; I(dummy * WS)  0.000088 -0.001892      0.000914</span></span></code></pre></div>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a><span class="co">#&gt; I(dummy * ws)  0.000088 -0.001892      0.000914</span></span></code></pre></div>
 </div>
 <div id="log-likelihood" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Log-likelihood</h2>
@@ -908,8 +906,8 @@ intercept only (<code>| 1</code>).</p>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">lrtest</span>(fit_loglog, fit_loglog_null)</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt; Likelihood ratio test</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; Model 1: RH ~ Ins2 + MT + WS + hs + hc + dummy + I(dummy * WS) | Pre2</span></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; Model 2: RH ~ Ins2 + MT + WS + hs + hc + dummy + I(dummy * WS) | 1</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; Model 1: rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; Model 2: rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | 1</span></span>
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt;   #Df LogLik Df Chisq Pr(&gt;Chisq)   </span></span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; 1  10    687                       </span></span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; 2   9    683 -1  9.73     0.0018 **</span></span>
@@ -917,7 +915,7 @@ intercept only (<code>| 1</code>).</p>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>The very small <span class="math inline">\(p\)</span>-value (<span class="math inline">\(&lt; 0.001\)</span>) provides strong evidence
 against constant dispersion, confirming that RH variability is
-significantly associated with precipitation (<code>Pre2</code>). The
+significantly associated with precipitation (<code>pre2</code>). The
 model with variable dispersion is therefore preferred.</p>
 </div>
 <div id="score-test-for-h_0-lambda-1" class="section level2" number="9.2">
@@ -928,7 +926,7 @@ model fitted under <span class="math inline">\(H_0\)</span> (with the
 logit link) and tests against either <code>&quot;plogit1&quot;</code> or
 <code>&quot;plogit2&quot;</code> as the alternative. Rejection of <span class="math inline">\(H_0\)</span> suggests that a parametric link
 provides a better fit than the standard logit.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>fit_logit_h0 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> rh, <span class="at">link.mu =</span> <span class="st">&quot;logit&quot;</span>)</span>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>fit_logit_h0 <span class="ot">&lt;-</span> <span class="fu">simplexreg</span>(formula, <span class="at">data =</span> RH, <span class="at">link.mu =</span> <span class="st">&quot;logit&quot;</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">scoretest</span>(fit_logit_h0, <span class="at">link.mu =</span> <span class="st">&quot;plogit1&quot;</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;  Rao score test</span></span>
@@ -957,17 +955,17 @@ functional form.</p>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt;  RESET test</span></span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; data:  RH ~ Ins2 + MT + WS + hs + hc + dummy + I(dummy * WS) | Pre2</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; data:  rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2</span></span>
 <span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; RESET = 0.404, df = 2, p-value = 0.82</span></span>
 <span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="fu">resettest</span>(fit_loglog, <span class="at">dispersion =</span> <span class="cn">FALSE</span>)  <span class="co"># mean submodel only</span></span>
 <span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt;  RESET test</span></span>
 <span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; data:  RH ~ Ins2 + MT + WS + hs + hc + dummy + I(dummy * WS) | Pre2</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; data:  rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2</span></span>
 <span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; RESET = 0.00136, df = 1, p-value = 0.97</span></span></code></pre></div>
 <p>The large <span class="math inline">\(p\)</span>-values in both cases
-(<span class="math inline">\(0.817\)</span> and <span class="math inline">\(0.929\)</span>) provide no evidence of functional
-form misspecification in either submodel.</p>
+(0.82 and 0.97) provide no evidence of functional form misspecification
+in either submodel.</p>
 </div>
 </div>
 <div id="fitted-values-residuals-and-predictive-performance" class="section level1" number="10">
@@ -1042,7 +1040,7 @@ the linear predictors <span class="math inline">\(\hat{\eta}_{1i}\)</span> and <
 <span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; 0.076636 0.082829 0.093798 0.071935 0.058869 0.058869</span></span>
 <span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a></span>
 <span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co"># Out-of-sample prediction</span></span>
-<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>new_obs <span class="ot">&lt;-</span> rh[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>new_obs <span class="ot">&lt;-</span> RH[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span>
 <span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="fu">predict</span>(fit_loglog, <span class="at">newdata =</span> new_obs, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
 <span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt; [1] 0.75946 0.78218 0.77083</span></span></code></pre></div>
 </div>
@@ -1222,11 +1220,11 @@ half-normal plot fall within the simulated envelope.</p>
 <div id="fitted-vs.-observed-time-series" class="section level1" number="14">
 <h1><span class="header-section-number">14</span> Fitted vs. Observed:
 Time Series</h1>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(rh<span class="sc">$</span>Date, rh<span class="sc">$</span>RH,</span>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(RH<span class="sc">$</span>date, RH<span class="sc">$</span>rh,</span>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>,</span>
 <span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Date&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Relative humidity&quot;</span>,</span>
 <span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Observed vs Fitted RH — Brasília (2000–2025)&quot;</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="fu">lines</span>(rh<span class="sc">$</span>Date, <span class="fu">fitted</span>(fit_loglog), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="fu">lines</span>(RH<span class="sc">$</span>date, <span class="fu">fitted</span>(fit_loglog), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
 <span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomleft&quot;</span>,</span>
 <span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Observed&quot;</span>, <span class="st">&quot;Fitted&quot;</span>),</span>
 <span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a>       <span class="at">col    =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
@@ -1300,16 +1298,16 @@ impunity data. <em>Applied Mathematical Modelling</em>,
 <span id="cb31-18"><a href="#cb31-18" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span id="cb31-19"><a href="#cb31-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb31-20"><a href="#cb31-20" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb31-21"><a href="#cb31-21" tabindex="-1"></a><span class="co">#&gt; [1] SimplexRegression_0.1.3</span></span>
+<span id="cb31-21"><a href="#cb31-21" tabindex="-1"></a><span class="co">#&gt; [1] SimplexRegression_0.1.4</span></span>
 <span id="cb31-22"><a href="#cb31-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb31-23"><a href="#cb31-23" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span id="cb31-24"><a href="#cb31-24" tabindex="-1"></a><span class="co">#&gt;  [1] cli_3.6.5         knitr_1.51        rlang_1.1.6       xfun_0.54        </span></span>
 <span id="cb31-25"><a href="#cb31-25" tabindex="-1"></a><span class="co">#&gt;  [5] Formula_1.2-5     otel_0.2.0        jsonlite_2.0.0    zoo_1.8-15       </span></span>
 <span id="cb31-26"><a href="#cb31-26" tabindex="-1"></a><span class="co">#&gt;  [9] htmltools_0.5.9   pracma_2.4.6      lmtest_0.9-40     sass_0.4.10      </span></span>
-<span id="cb31-27"><a href="#cb31-27" tabindex="-1"></a><span class="co">#&gt; [13] rmarkdown_2.30    grid_4.5.2        evaluate_1.0.5    jquerylib_0.1.4  </span></span>
+<span id="cb31-27"><a href="#cb31-27" tabindex="-1"></a><span class="co">#&gt; [13] rmarkdown_2.31    grid_4.5.2        evaluate_1.0.5    jquerylib_0.1.4  </span></span>
 <span id="cb31-28"><a href="#cb31-28" tabindex="-1"></a><span class="co">#&gt; [17] fastmap_1.2.0     yaml_2.3.12       lifecycle_1.0.5   compiler_4.5.2   </span></span>
 <span id="cb31-29"><a href="#cb31-29" tabindex="-1"></a><span class="co">#&gt; [21] sandwich_3.1-1    rstudioapi_0.18.0 lattice_0.22-7    digest_0.6.38    </span></span>
-<span id="cb31-30"><a href="#cb31-30" tabindex="-1"></a><span class="co">#&gt; [25] R6_2.6.1          parallel_4.5.2    bslib_0.10.0      Matrix_1.7-4     </span></span>
+<span id="cb31-30"><a href="#cb31-30" tabindex="-1"></a><span class="co">#&gt; [25] R6_2.6.1          parallel_4.5.2    bslib_0.11.0      Matrix_1.7-4     </span></span>
 <span id="cb31-31"><a href="#cb31-31" tabindex="-1"></a><span class="co">#&gt; [29] tools_4.5.2       cachem_1.1.0</span></span></code></pre></div>
 </div>
 

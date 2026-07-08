@@ -16,25 +16,25 @@ data(RelativeHumidity, package = "SimplexRegression")
 head(RelativeHumidity, 5)
 
 ## ----data-prep------------------------------------------------------
-rh       <- RelativeHumidity
-rh$hs    <- sin(2 * pi * seq_len(nrow(rh)) / 12)
-rh$hc    <- cos(2 * pi * seq_len(nrow(rh)) / 12)
-rh$dummy <- as.integer(as.integer(format(rh$Date, "%m")) %in% 10:12)
+RH       <- RelativeHumidity
+RH$hs    <- sin(2 * pi * seq_len(nrow(RH)) / 12)
+RH$hc    <- cos(2 * pi * seq_len(nrow(RH)) / 12)
+RH$dummy <- as.integer(as.integer(format(RH$date, "%m")) %in% 10:12)
 
 ## ----summary-rh-----------------------------------------------------
-summary(rh$RH)
+summary(RH$rh)
 cat(sprintf(
   "Std. dev.: %.4f  |  Skewness: %.4f\n",
-  sd(rh$RH),
-  mean(((rh$RH - mean(rh$RH)) / sd(rh$RH))^3)
+  sd(RH$rh),
+  mean(((RH$rh - mean(RH$rh)) / sd(RH$rh))^3)
 ))
 
 ## ----formula--------------------------------------------------------
-formula <- RH ~ Ins2 + MT + WS + hs + hc + dummy + I(dummy * WS) | Pre2
+formula <- rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2
 
 ## ----models-plogit--------------------------------------------------
-fit_p1 <- simplexreg(formula, data = rh, link.mu = "plogit1")
-fit_p2 <- simplexreg(formula, data = rh, link.mu = "plogit2")
+fit_p1 <- simplexreg(formula, data = RH, link.mu = "plogit1")
+fit_p2 <- simplexreg(formula, data = RH, link.mu = "plogit2")
 
 ## ----penalized-ss-param---------------------------------------------
 penalized.ss(fit_p1, fit_p2, kappa = 0.1)
@@ -43,11 +43,11 @@ penalized.ss(fit_p1, fit_p2, kappa = 0.1)
 penalized.ic(fit_p1, fit_p2, kappa = 0.1)
 
 ## ----models-fixed---------------------------------------------------
-fit_loglog  <- simplexreg(formula, data = rh, link.mu = "loglog")
-fit_logit   <- simplexreg(formula, data = rh, link.mu = "logit")
-fit_probit  <- simplexreg(formula, data = rh, link.mu = "probit")
-fit_cauchit <- simplexreg(formula, data = rh, link.mu = "cauchit")
-fit_cloglog <- simplexreg(formula, data = rh, link.mu = "cloglog")
+fit_loglog  <- simplexreg(formula, data = RH, link.mu = "loglog")
+fit_logit   <- simplexreg(formula, data = RH, link.mu = "logit")
+fit_probit  <- simplexreg(formula, data = RH, link.mu = "probit")
+fit_cauchit <- simplexreg(formula, data = RH, link.mu = "cauchit")
+fit_cloglog <- simplexreg(formula, data = RH, link.mu = "cloglog")
 
 ## ----penalized-ss-all-----------------------------------------------
 penalized.ss(
@@ -78,7 +78,7 @@ fit_loglog_null <- update(fit_loglog, . ~ . | 1)
 lmtest::lrtest(fit_loglog, fit_loglog_null)
 
 ## ----scoretest------------------------------------------------------
-fit_logit_h0 <- simplexreg(formula, data = rh, link.mu = "logit")
+fit_logit_h0 <- simplexreg(formula, data = RH, link.mu = "logit")
 scoretest(fit_logit_h0, link.mu = "plogit1")
 scoretest(fit_logit_h0, link.mu = "plogit2")
 
@@ -103,7 +103,7 @@ head(predict(fit_loglog, type = "link")$dispersion) # dispersion predictor
 head(predict(fit_loglog, type = "dispersion"))      # fitted sigma^2
 
 # Out-of-sample prediction
-new_obs <- rh[1:3, ]
+new_obs <- RH[1:3, ]
 predict(fit_loglog, newdata = new_obs, type = "response")
 
 ## ----simulate-------------------------------------------------------
@@ -159,11 +159,11 @@ local.influence(
 halfnormal.plot(fit_loglog, nsim = 19, type = "weighted", seed = 2026)
 
 ## ----timeseries, fig.height = 4, fig.cap = "Observed (solid black) and fitted (dashed red) monthly relative humidity in Brasília, January 2000 to December 2025."----
-plot(rh$Date, rh$RH,
+plot(RH$date, RH$rh,
      type = "l", col = "black", lwd = 1.2,
      xlab = "Date", ylab = "Relative humidity",
      main = "Observed vs Fitted RH — Brasília (2000–2025)")
-lines(rh$Date, fitted(fit_loglog), col = "red", lwd = 1.5, lty = 2)
+lines(RH$date, fitted(fit_loglog), col = "red", lwd = 1.5, lty = 2)
 legend("bottomleft",
        legend = c("Observed", "Fitted"),
        col    = c("black", "red"),
