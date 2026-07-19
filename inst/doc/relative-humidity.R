@@ -30,7 +30,7 @@ cat(sprintf(
 ))
 
 ## ----formula--------------------------------------------------------
-formula <- rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2
+formula <- rh ~ ins2 + tmax + ws + hs + hc + dummy + I(dummy * ws) | pre2
 
 ## ----models-plogit--------------------------------------------------
 fit_p1 <- simplexreg(formula, data = RH, link.mu = "plogit1")
@@ -122,18 +122,15 @@ gl <- gleverage(fit_loglog)
 cat(sprintf("Generalized leverage — max: %.4f  mean: %.4f\n",
             max(gl), mean(gl)))
 
-## ----plots-1-5, fig.height = 8, fig.cap = "Diagnostic plots (1–6) for the fitted simplex regression model with log-log link."----
-oldpar <- par(mfrow = c(3, 2))
-plot(fit_loglog, which = 1:5, reset.par = FALSE)
+## ----plots-1-7, fig.height = 8, fig.cap = "Diagnostic plots (1–7) for the fitted simplex regression model with log-log link."----
+oldpar <- par(mfrow = c(3, 3))
+plot(fit_loglog, which = 1:5, ask = FALSE)
+plot(fit_loglog, which = 6, threshold = 0.15, label.pos = c(4,2,3))
+plot(fit_loglog, which = 7, threshold = 0.08, label.pos = c(3,3,3,4))
 par(oldpar)
 
-## ----plot-cook, fig.height = 4, fig.cap = "Cook's distances. Observations exceeding the threshold of 0.15 are labeled."----
-plot(fit_loglog, which = 6, threshold = 0.15, label.pos = 4)
-
-## ----plot-glev, fig.height = 4, fig.cap = "Generalized leverage values. Observations exceeding 0.08 are labeled."----
-plot(fit_loglog, which = 7, threshold = 0.08, label.pos = 3)
-
-## ----local-influence-cw, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under case-weight perturbation for all parameters."----
+## ----local-influence-cw, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under case-weight and response perturbation for all parameters."----
+oldpar <- par(mfrow = c(1, 2))
 local.influence(
   fit_loglog,
   scheme    = "case.weight",
@@ -141,10 +138,8 @@ local.influence(
   type      = "Ci",
   plot      = TRUE,
   threshold = 0.5,
-  label.pos = c(3, 4, 3, 2, 2)
+  label.pos = c(3, 2, 4)
 )
-
-## ----local-influence-resp, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under response perturbation for all parameters."----
 local.influence(
   fit_loglog,
   scheme    = "response",
@@ -154,6 +149,7 @@ local.influence(
   threshold = 0.4,
   label.pos = 2
 )
+par(oldpar)
 
 ## ----halfnormal, fig.height = 5, fig.cap = "Half-normal plot of absolute weighted residuals with 95% simulated envelope (100 replications)."----
 halfnormal.plot(fit_loglog, nsim = 19, type = "weighted", seed = 2026)

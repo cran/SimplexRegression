@@ -10,7 +10,6 @@
   type = c("quantile", "pearson", "deviance", "standardized", "weighted", "variance",
     "biasvariance", "score", "dualscore", "response"),
   ask = prod(par("mfcol")) < length(which) && interactive(),
-  reset.par = TRUE,
   threshold = NULL,
   label.pos = 3,
   plot.type = NULL,
@@ -18,7 +17,7 @@
 )
 }
 \arguments{
-\item{x}{An object of class \code{simplexregression}.}
+\item{x}{An object of class \code{"simplexregression"}.}
 
 \item{which}{Numeric vector indicating which plots to display (\code{1:7}).}
 
@@ -27,10 +26,6 @@
 
 \item{ask}{Logical; if \code{TRUE}, the user is asked before each plot.
 Default is \code{TRUE} when multiple plots are requested.}
-
-\item{reset.par}{Logical; if \code{TRUE}, resets graphical parameters before plotting.
-Set to \code{FALSE} to preserve user-defined \code{par()} settings such as \code{mfrow}.
-Default is \code{TRUE}.}
 
 \item{threshold}{Numeric threshold for identifying influential or outlying
 observations in plots 1--3 (residuals plots), 6 (Cook's distance), and
@@ -44,9 +39,10 @@ See \code{\link[graphics]{text}} for details.}
 
 \item{plot.type}{Controls the plot symbol/type for scatter plots and index plots.
 If \code{NULL} (default), uses \code{pch = 1} (open circles) for residual plots
-(which = 1--5) and \code{type = "h"} (vertical lines) for Cook's distance and
-generalized leverage plots (which = 6--7). Otherwise, the value is passed
-directly to \code{pch} (for scatter plots) or \code{type} (for index plots).}
+(which = 1--4) and \code{type = "h"} (vertical lines) for Cook's distance
+(\code{which = 6}) and generalized leverage plots (\code{which = 7}).
+Otherwise, the value is passed directly to \code{pch} (for scatter plots) or
+\code{type} (for index plots).}
 
 \item{...}{Additional graphical parameters.}
 }
@@ -59,7 +55,7 @@ Produces diagnostic plots for fitted simplex regression models with
 parametric or fixed mean link function.
 }
 \details{
-Eight diagnostic plots are available:
+Seven diagnostic plots are available:
 \itemize{
   \item Residuals vs observation index (\code{which = 1}): Identifies outliers
   and temporal patterns;

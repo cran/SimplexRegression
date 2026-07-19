@@ -5,7 +5,7 @@ output:
     toc: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{relative-humidity}
+  %\VignetteIndexEntry{Modeling Relative Air Humidity with Simplex Regression}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -141,16 +141,16 @@ head(RelativeHumidity, 5)
 | Variable | Description |
 |----------|-------------|
 | `date`   | Observation date (end of month) |
-| `rh`     | Monthly average relative humidity, rescaled to $(0,1)$ |
+| `rh`     | Monthly average relative humidity, rescaled to $(0, 1)$ |
 | `ins`    | Total insolation (hours), with two missing values |
 | `ins2`   | Total insolation with imputed missing values |
 | `pre`    | Total precipitation (mm), with two missing values |
 | `pre2`   | Total precipitation with imputed missing values |
-| `neb`    | Average cloudiness (tenths) |
+| `cld`    | Average cloudiness (tenths) |
 | `ap`     | Average atmospheric pressure (hPa) |
-| `mt`     | Average maximum temperature (°C) |
+| `tmax`   | Average maximum temperature (°C) |
 | `ws`     | Average wind speed (m/s) |
-| `dir`    | Predominant wind direction (degrees) |
+| `wd`     | Predominant wind direction (degrees) |
 
 ## Data preparation
 
@@ -187,13 +187,13 @@ unit-interval distribution such as the simplex.
 All models fitted in this vignette share the same formula structure. The
 two-part formula `y ~ x | z` specifies the mean submodel (left of `|`) and
 the dispersion submodel (right of `|`) simultaneously. The mean submodel
-includes insolation (`ins2`), maximum temperature (`mt`), wind speed (`ws`),
+includes insolation (`ins2`), maximum temperature (`tmax`), wind speed (`ws`),
 harmonic terms (`hs`, `hc`) to capture seasonality, a rainy-season dummy,
 and its interaction with wind speed. The dispersion submodel contains only
 precipitation (`pre2`), allowing the variability of RH to depend on rainfall.
 
 ```{r formula}
-formula <- rh ~ ins2 + mt + ws + hs + hc + dummy + I(dummy * ws) | pre2
+formula <- rh ~ ins2 + tmax + ws + hs + hc + dummy + I(dummy * ws) | pre2
 ```
 
 # Parametric Mean Link Functions
@@ -283,7 +283,7 @@ summary(fit_loglog)
 All regression coefficients are statistically significant at the 5% level.
 The harmonic terms (`hs`, `hc`) and the rainy-season dummy capture the
 strong seasonal pattern in RH, while insolation (`ins2`), maximum temperature
-(`mt`), and wind speed (`ws`) explain the within-season variation. The
+(`tmax`), and wind speed (`ws`) explain the within-season variation. The
 Nagelkerke and Ferrari–Cribari-Neto pseudo-$R^2$ values both exceed 0.95,
 indicating an excellent fit. The model converged in 18 BFGS iterations
 followed by 7 Fisher scoring steps.
@@ -501,18 +501,12 @@ leverages. The default residual type is `"quantile"`. For plots 6 and 7,
 `threshold` highlights influential observations and `label.pos` controls
 label placement (1 = below, 2 = left, 3 = above, 4 = right).
 
-```{r plots-1-5, fig.height = 8, fig.cap = "Diagnostic plots (1–6) for the fitted simplex regression model with log-log link."}
-oldpar <- par(mfrow = c(3, 2))
-plot(fit_loglog, which = 1:5, reset.par = FALSE)
+```{r plots-1-7, fig.height = 8, fig.cap = "Diagnostic plots (1–7) for the fitted simplex regression model with log-log link."}
+oldpar <- par(mfrow = c(3, 3))
+plot(fit_loglog, which = 1:5, ask = FALSE)
+plot(fit_loglog, which = 6, threshold = 0.15, label.pos = c(4,2,3))
+plot(fit_loglog, which = 7, threshold = 0.08, label.pos = c(3,3,3,4))
 par(oldpar)
-```
-
-```{r plot-cook, fig.height = 4, fig.cap = "Cook's distances. Observations exceeding the threshold of 0.15 are labeled."}
-plot(fit_loglog, which = 6, threshold = 0.15, label.pos = 4)
-```
-
-```{r plot-glev, fig.height = 4, fig.cap = "Generalized leverage values. Observations exceeding 0.08 are labeled."}
-plot(fit_loglog, which = 7, threshold = 0.08, label.pos = 3)
 ```
 
 The quantile residuals are approximately standard normal, with no systematic
@@ -532,7 +526,8 @@ the influence measure: `"Ci"` for the total local influence index $C_i$,
 or `"dmax"` for the direction of maximum curvature. Observations exceeding
 `threshold` are labeled in the index plot.
 
-```{r local-influence-cw, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under case-weight perturbation for all parameters."}
+```{r local-influence-cw, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under case-weight and response perturbation for all parameters."}
+oldpar <- par(mfrow = c(1, 2))
 local.influence(
   fit_loglog,
   scheme    = "case.weight",
@@ -540,11 +535,8 @@ local.influence(
   type      = "Ci",
   plot      = TRUE,
   threshold = 0.5,
-  label.pos = c(3, 4, 3, 2, 2)
+  label.pos = c(3, 2, 4)
 )
-```
-
-```{r local-influence-resp, fig.height = 4.5, fig.cap = "Total local influence $C_i$ under response perturbation for all parameters."}
 local.influence(
   fit_loglog,
   scheme    = "response",
@@ -554,6 +546,7 @@ local.influence(
   threshold = 0.4,
   label.pos = 2
 )
+par(oldpar)
 ```
 
 A small set of observations is identified as locally influential under both
