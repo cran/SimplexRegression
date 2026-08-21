@@ -37,10 +37,10 @@ fit_p1 <- simplexreg(formula, data = RH, link.mu = "plogit1")
 fit_p2 <- simplexreg(formula, data = RH, link.mu = "plogit2")
 
 ## ----penalized-ss-param---------------------------------------------
-penalized.ss(fit_p1, fit_p2, kappa = 0.1)
+ss.penalized(fit_p1, fit_p2, kappa = 0.1)
 
 ## ----penalized-ic---------------------------------------------------
-penalized.ic(fit_p1, fit_p2, kappa = 0.1)
+ic.penalized(fit_p1, fit_p2, kappa = 0.1)
 
 ## ----models-fixed---------------------------------------------------
 fit_loglog  <- simplexreg(formula, data = RH, link.mu = "loglog")
@@ -50,7 +50,7 @@ fit_cauchit <- simplexreg(formula, data = RH, link.mu = "cauchit")
 fit_cloglog <- simplexreg(formula, data = RH, link.mu = "cloglog")
 
 ## ----penalized-ss-all-----------------------------------------------
-penalized.ss(
+ss.penalized(
   fit_loglog, fit_logit, fit_probit,
   fit_cauchit, fit_cloglog, fit_p1,
   kappa = 0
@@ -60,9 +60,8 @@ penalized.ss(
 summary(fit_loglog)
 
 ## ----aic-bic--------------------------------------------------------
-AIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
-BIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
-HQIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
+AIC(fit_loglog); AIC(fit_logit); AIC(fit_probit); AIC(fit_cauchit); AIC(fit_cloglog); AIC(fit_p1)
+BIC(fit_loglog); BIC(fit_logit); BIC(fit_probit); BIC(fit_cauchit); BIC(fit_cloglog); BIC(fit_p1)
 
 ## ----coef-vcov------------------------------------------------------
 coef(fit_loglog)                          # full coefficient vector

@@ -201,7 +201,7 @@ simplexreg.control <- function(method = "BFGS",
 #'
 #' @seealso \code{\link{summary.simplexregression}},
 #' \code{\link{predict.simplexregression}}, \code{\link{residuals.simplexregression}},
-#' \code{\link{penalized.ic}}, \code{\link{penalized.ss}},
+#' \code{\link{ic.penalized}}, \code{\link{ss.penalized}},
 #' \code{\link{scoretest}}
 #'
 #' @return An object of class \code{"simplexregression"}, i.e.,

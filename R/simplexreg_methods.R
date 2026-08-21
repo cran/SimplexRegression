@@ -3,7 +3,7 @@
 # Author: Maria Eduarda da Cruz Justino and Francisco Cribari-Neto             #
 # Date: 2026-05-26                                                             #
 # Description: S3 methods for simplexregression objects including summary,     #
-#              print, predict, coef, vcov, logLik, AIC, BIC, and others        #
+#              print, predict, coef, vcov, logLik, and others                  #
 ################################################################################
 
 # ==============================================================================
@@ -38,7 +38,6 @@ is_parametric <- function(object) {
 #' @param nsim number of response vectors to simulate. Defaults to \code{1}.
 #' @param seed an object specifying if and how the random number generator
 #' should be initialized.
-#' @param k weight of the penalty term in AIC. Default is \code{2}.
 #' @param vcov. a specification of the covariance matrix of the estimated coefficients.
 #' @param df the degrees of freedom to be used.
 #' @param ... Additional arguments.
@@ -54,19 +53,13 @@ is_parametric <- function(object) {
 #'   \item \code{coef}: named numeric vector of coefficients;
 #'   \item \code{vcov}: numeric matrix (variance-covariance);
 #'   \item \code{logLik}: object of class \code{"logLik"};
-#'   \item \code{fitted}: numeric vector of fitted mean values;
 #'   \item \code{predict}: numeric vector or list depending on \code{type};
-#'   \item \code{nobs}: integer scalar (number of observations);
-#'   \item \code{df.residual}: integer scalar (residual degrees of freedom);
-#'   \item \code{deviance}: numeric scalar (total deviance);
 #'   \item \code{formula}: the model formula;
 #'   \item \code{terms}: the model terms for the selected submodel;
 #'   \item \code{model.frame}: a data frame;
 #'   \item \code{model.matrix}: numeric matrix of regressors;
 #'   \item \code{update}: fitted model or call depending on \code{evaluate};
 #'   \item \code{simulate}: a data frame with \code{nsim} columns;
-#'   \item \code{AIC}, \code{BIC}, \code{HQIC}: numeric scalar (single model)
-#'     or data frame (multiple models);
 #'   \item \code{hatvalues}: numeric vector of hat values;
 #'   \item \code{bread}: numeric matrix;
 #'   \item \code{estfun}: numeric matrix of score contributions;
@@ -86,18 +79,12 @@ is_parametric <- function(object) {
 #' coef(fit)
 #' vcov(fit)
 #' logLik(fit)
-#' fitted(fit)
-#' AIC(fit)
-#' BIC(fit)
-#' HQIC(fit)
 #' hatvalues(fit)
 #'
 #' @aliases print.simplexregression summary.simplexregression coef.simplexregression
-#' @aliases vcov.simplexregression logLik.simplexregression fitted.simplexregression
-#' @aliases predict.simplexregression nobs.simplexregression df.residual.simplexregression
-#' @aliases deviance.simplexregression formula.simplexregression terms.simplexregression
+#' @aliases vcov.simplexregression logLik.simplexregression predict.simplexregression
+#' @aliases terms.simplexregression simulate.simplexregression
 #' @aliases model.frame.simplexregression model.matrix.simplexregression update.simplexregression
-#' @aliases simulate.simplexregression AIC.simplexregression BIC.simplexregression
 #' @aliases hatvalues.simplexregression bread.simplexregression
 #' @aliases estfun.simplexregression coeftest.simplexregression lrtest.simplexregression
 
@@ -395,15 +382,7 @@ logLik.simplexregression <- function(object, ...) {
 }
 
 #' @rdname simplexreg.methods
-#' @method fitted simplexregression
-#' @export
-fitted.simplexregression <- function(object, ...) {
-  object$fitted.values
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom stats na.pass
-#' @importFrom Formula as.Formula
+#' @importFrom stats na.pass as.formula
 #' @method predict simplexregression
 #' @export
 predict.simplexregression <- function(object, newdata = NULL,
@@ -476,37 +455,6 @@ predict.simplexregression <- function(object, newdata = NULL,
          dispersion = dispersion_link_inv(eta2, object$sigma2.link),
          link       = list(mean = eta1, dispersion = eta2)
   )
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom stats nobs
-#' @export
-nobs.simplexregression <- function(object, ...) {
-  object$nobs
-}
-
-#' @rdname simplexreg.methods
-#' @export
-df.residual.simplexregression <- function(object, ...) {
-  object$nobs - .npar(object)
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom stats deviance
-#' @export
-deviance.simplexregression <- function(object, ...) {
-  y <- if(is.null(object$y)) model.response(model.frame(object)) else object$y
-  mu <- object$mu.fv
-  yoneminy <- y * (1 - y)
-  muonemu <- mu * (1 - mu)
-  sum(((y - mu) / muonemu)^2 / yoneminy)
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom stats as.formula
-#' @export
-formula.simplexregression <- function(x, ...) {
-  x$formula
 }
 
 #' @rdname simplexreg.methods
@@ -602,66 +550,6 @@ simulate.simplexregression <- function(object, nsim = 1, seed = NULL, ...) {
 }
 
 #' @rdname simplexreg.methods
-#' @importFrom stats AIC
-#' @export
-AIC.simplexregression <- function(object, ..., k = 2) {
-  objects <- list(object, ...)
-
-  aic_fn <- function(obj) -2 * obj$loglik + k * .npar(obj)
-
-  if (length(objects) == 1) return(aic_fn(object))
-
-  model_names <- c(deparse(substitute(object)),
-                   sapply(substitute(list(...)), deparse)[-1])
-  data.frame(
-    df  = sapply(objects, .npar),
-    AIC = sapply(objects, aic_fn),
-    row.names = model_names
-  )
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom stats BIC
-#' @export
-BIC.simplexregression <- function(object, ...) {
-  objects <- list(object, ...)
-
-  bic_fn <- function(obj) -2 * obj$loglik + log(obj$nobs) * .npar(obj)
-
-  if (length(objects) == 1) return(bic_fn(object))
-
-  model_names <- c(deparse(substitute(object)),
-                   sapply(substitute(list(...)), deparse)[-1])
-  data.frame(
-    df  = sapply(objects, .npar),
-    BIC = sapply(objects, bic_fn),
-    row.names = model_names
-  )
-}
-
-#' @rdname simplexreg.methods
-#' @export
-HQIC <- function(object, ...) UseMethod("HQIC")
-
-#' @rdname simplexreg.methods
-#' @export
-HQIC.simplexregression <- function(object, ...) {
-  objects <- list(object, ...)
-
-  hqic_fn <- function(obj) -2 * obj$loglik + 2 * .npar(obj) * log(log(obj$nobs))
-
-  if (length(objects) == 1) return(hqic_fn(object))
-
-  model_names <- c(deparse(substitute(object)),
-                   sapply(substitute(list(...)), deparse)[-1])
-  data.frame(
-    df   = sapply(objects, .npar),
-    HQIC = sapply(objects, hqic_fn),
-    row.names = model_names
-  )
-}
-
-#' @rdname simplexreg.methods
 #' @importFrom stats hatvalues
 #' @export
 hatvalues.simplexregression <- function(model, ...) {
@@ -688,13 +576,6 @@ hatvalues.simplexregression <- function(model, ...) {
   )
 
   rowSums((Xw %*% Inv) * Xw)
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom sandwich bread
-#' @export
-bread.simplexregression <- function(x, ...) {
-  x$nobs * vcov(x)
 }
 
 #' @rdname simplexreg.methods
@@ -761,16 +642,16 @@ estfun.simplexregression <- function(x, ...) {
 }
 
 #' @rdname simplexreg.methods
+#' @importFrom sandwich bread
+#' @export
+bread.simplexregression <- function(x, ...) {
+  x$nobs * vcov(x)
+}
+
+#' @rdname simplexreg.methods
 #' @importFrom lmtest coeftest
 #' @export
 coeftest.simplexregression <- function(x, vcov. = NULL, df = Inf, ...) {
   if (is.null(vcov.)) vcov. <- x$vcov
   lmtest::coeftest.default(x, vcov. = vcov., df = df, ...)
-}
-
-#' @rdname simplexreg.methods
-#' @importFrom lmtest lrtest
-#' @export
-lrtest.simplexregression <- function(object, ...) {
-  lmtest::lrtest.default(object, ...)
 }

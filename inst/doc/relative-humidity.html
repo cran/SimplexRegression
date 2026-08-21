@@ -517,8 +517,8 @@ covers:</p>
 <li>fitting simplex regression models with <strong>parametric</strong>
 and <strong>fixed</strong> mean link functions;</li>
 <li>link function selection via the <strong>penalized Scout
-Score</strong> (<code>penalized.ss</code>) and <strong>penalized
-information criteria</strong> (<code>penalized.ic</code>);</li>
+Score</strong> (<code>ss.penalized</code>) and <strong>penalized
+information criteria</strong> (<code>ic.penalized</code>);</li>
 <li><strong>likelihood ratio test</strong> for nested models
 (<code>lrtest</code>);</li>
 <li>score test for <span class="math inline">\(H_0\!: \lambda =
@@ -676,15 +676,15 @@ predictor.</p>
 <h2><span class="header-section-number">4.2</span> Penalized Scout Score
 and information criteria</h2>
 <p>When comparing models that all use a parametric link, the
-<strong>penalized Scout Score</strong> (<code>penalized.ss</code>) and
+<strong>penalized Scout Score</strong> (<code>ss.penalized</code>) and
 <strong>penalized information criteria</strong>
-(<code>penalized.ic</code>) are recommended. These functions incorporate
+(<code>ic.penalized</code>) are recommended. These functions incorporate
 an additional penalty controlled by <code>kappa</code> (default
 <code>kappa = 0.1</code>) that accounts for the complexity introduced by
 <span class="math inline">\(\lambda\)</span> relative to its deviation
 from the standard logit. The model with the highest Scout Score or
 lowest penalized criterion is selected.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">penalized.ss</span>(fit_p1, fit_p2, <span class="at">kappa =</span> <span class="fl">0.1</span>)</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">ss.penalized</span>(fit_p1, fit_p2, <span class="at">kappa =</span> <span class="fl">0.1</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; Penalized Scout Score values (kappa = 0.100):</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;        df     SS</span></span>
@@ -692,10 +692,10 @@ lowest penalized criterion is selected.</p>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; fit_p2 11  0.000</span></span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; Selected model: fit_p1</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">penalized.ic</span>(fit_p1, fit_p2, <span class="at">kappa =</span> <span class="fl">0.1</span>)</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">ic.penalized</span>(fit_p1, fit_p2, <span class="at">kappa =</span> <span class="fl">0.1</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Penalized information criteria values (kappa = 0.100):</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;        df      AICc      BICc     HQICc</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;        df      AICp      BICp     HQICp</span></span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; fit_p1 11 -1352.561 -1311.388 -1336.105</span></span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; fit_p2 11 -1349.259 -1308.086 -1332.803</span></span></code></pre></div>
 <p>All penalized criteria unanimously select the <code>plogit1</code>
@@ -725,7 +725,7 @@ candidates</h2>
 simultaneously, the <strong>unpenalized</strong> version
 (<code>kappa = 0</code>) must be used, since the penalty for <span class="math inline">\(\lambda\)</span> is only meaningful when all
 candidates use a parametric link.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">penalized.ss</span>(</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ss.penalized</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  fit_loglog, fit_logit, fit_probit,</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  fit_cauchit, fit_cloglog, fit_p1,</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="dv">0</span></span>
@@ -752,7 +752,7 @@ for all remaining analyses.</p>
 output: estimated coefficients for the mean and dispersion submodels,
 standard errors, Wald <span class="math inline">\(z\)</span>-statistics
 and <span class="math inline">\(p\)</span>-values, the maximized
-log-likelihood, information criteria (AIC, BIC, HQIC), pseudo-<span class="math inline">\(R^2\)</span> measures, and details on the
+log-likelihood, information criteria (AIC, BIC), pseudo-<span class="math inline">\(R^2\)</span> measures, and details on the
 numerical optimization procedure.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">summary</span>(fit_loglog)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -800,33 +800,23 @@ an excellent fit. The model converged in 18 BFGS iterations followed by
 <div id="standard-information-criteria" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Standard Information
 Criteria</h1>
-<p>The standard (unpenalized) AIC, BIC, and HQIC are accessible via the
-usual S3 generics and compare multiple models simultaneously. Lower
-values indicate a better trade-off between fit and complexity.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">AIC</span>(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt;             df     AIC</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; fit_loglog  10 -1354.9</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; fit_logit   10 -1345.9</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; fit_probit  10 -1339.1</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; fit_cauchit 10 -1348.6</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; fit_cloglog 10 -1300.7</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; fit_p1      11 -1353.4</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="fu">BIC</span>(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)</span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;             df     BIC</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; fit_loglog  10 -1317.5</span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; fit_logit   10 -1308.4</span></span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; fit_probit  10 -1301.7</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; fit_cauchit 10 -1311.2</span></span>
-<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; fit_cloglog 10 -1263.2</span></span>
-<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; fit_p1      11 -1312.2</span></span>
-<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="fu">HQIC</span>(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)</span>
-<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt;             df    HQIC</span></span>
-<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; fit_loglog  10 -1340.0</span></span>
-<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; fit_logit   10 -1330.9</span></span>
-<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; fit_probit  10 -1324.2</span></span>
-<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; fit_cauchit 10 -1333.6</span></span>
-<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; fit_cloglog 10 -1285.7</span></span>
-<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; fit_p1      11 -1336.9</span></span></code></pre></div>
+<p>The standard (unpenalized) AIC and BIC are accessible via the usual
+S3 generics. Lower values indicate a better trade-off between fit and
+complexity.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">AIC</span>(fit_loglog); <span class="fu">AIC</span>(fit_logit); <span class="fu">AIC</span>(fit_probit); <span class="fu">AIC</span>(fit_cauchit); <span class="fu">AIC</span>(fit_cloglog); <span class="fu">AIC</span>(fit_p1)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; [1] -1354.9</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; [1] -1345.9</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1] -1339.1</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; [1] -1348.6</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; [1] -1300.7</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; [1] -1353.4</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="fu">BIC</span>(fit_loglog); <span class="fu">BIC</span>(fit_logit); <span class="fu">BIC</span>(fit_probit); <span class="fu">BIC</span>(fit_cauchit); <span class="fu">BIC</span>(fit_cloglog); <span class="fu">BIC</span>(fit_p1)</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; [1] -1317.5</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; [1] -1308.4</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; [1] -1301.7</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; [1] -1311.2</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; [1] -1263.2</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; [1] -1312.2</span></span></code></pre></div>
 <p>The log-log model consistently achieves the lowest values across all
 three criteria, confirming the Scout Score selection.</p>
 </div>
@@ -1280,16 +1270,16 @@ impunity data. <em>Applied Mathematical Modelling</em>,
 <span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb28-21"><a href="#cb28-21" tabindex="-1"></a><span class="co">#&gt; [1] SimplexRegression_0.1.5</span></span>
+<span id="cb28-21"><a href="#cb28-21" tabindex="-1"></a><span class="co">#&gt; [1] SimplexRegression_0.1.6</span></span>
 <span id="cb28-22"><a href="#cb28-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb28-23"><a href="#cb28-23" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span id="cb28-24"><a href="#cb28-24" tabindex="-1"></a><span class="co">#&gt;  [1] cli_3.6.5         knitr_1.51        rlang_1.1.6       xfun_0.54        </span></span>
-<span id="cb28-25"><a href="#cb28-25" tabindex="-1"></a><span class="co">#&gt;  [5] Formula_1.2-5     otel_0.2.0        jsonlite_2.0.0    zoo_1.8-15       </span></span>
+<span id="cb28-24"><a href="#cb28-24" tabindex="-1"></a><span class="co">#&gt;  [1] cli_3.6.5         knitr_1.51        rlang_1.1.6       xfun_0.60        </span></span>
+<span id="cb28-25"><a href="#cb28-25" tabindex="-1"></a><span class="co">#&gt;  [5] Formula_1.2-6     otel_0.2.0        jsonlite_2.0.0    zoo_1.8-15       </span></span>
 <span id="cb28-26"><a href="#cb28-26" tabindex="-1"></a><span class="co">#&gt;  [9] htmltools_0.5.9   pracma_2.4.6      lmtest_0.9-40     sass_0.4.10      </span></span>
 <span id="cb28-27"><a href="#cb28-27" tabindex="-1"></a><span class="co">#&gt; [13] rmarkdown_2.31    grid_4.5.2        evaluate_1.0.5    jquerylib_0.1.4  </span></span>
 <span id="cb28-28"><a href="#cb28-28" tabindex="-1"></a><span class="co">#&gt; [17] fastmap_1.2.0     yaml_2.3.12       lifecycle_1.0.5   compiler_4.5.2   </span></span>
-<span id="cb28-29"><a href="#cb28-29" tabindex="-1"></a><span class="co">#&gt; [21] sandwich_3.1-2    rstudioapi_0.18.0 lattice_0.22-7    digest_0.6.38    </span></span>
-<span id="cb28-30"><a href="#cb28-30" tabindex="-1"></a><span class="co">#&gt; [25] R6_2.6.1          parallel_4.5.2    moments_0.14.1    bslib_0.11.0     </span></span>
+<span id="cb28-29"><a href="#cb28-29" tabindex="-1"></a><span class="co">#&gt; [21] sandwich_3.1-3    rstudioapi_0.18.0 lattice_0.22-7    digest_0.6.39    </span></span>
+<span id="cb28-30"><a href="#cb28-30" tabindex="-1"></a><span class="co">#&gt; [25] R6_2.6.1          parallel_4.5.2    moments_0.14.1    bslib_0.12.0     </span></span>
 <span id="cb28-31"><a href="#cb28-31" tabindex="-1"></a><span class="co">#&gt; [29] Matrix_1.7-4      tools_4.5.2       cachem_1.1.0</span></span></code></pre></div>
 </div>
 

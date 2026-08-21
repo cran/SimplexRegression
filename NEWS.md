@@ -1,8 +1,24 @@
+# SimplexRegression 0.1.6
+
+## New features
+* Added `ic()`, a function to compute information criteria (AIC, SIC, HQIC)
+  and their finite-sample corrections (AICc, SICc, HQICc) for
+  `simplexregression` model fits.
+
+## Bug fixes, validation, and breaking changes
+* Renamed `penalized.ic()` to `ic.penalized()` and `penalized.ss()` to
+  `ss.penalized()`.
+* Removed the custom `nobs()`, `fitted()`, `formula()`, `AIC()`, `BIC()`,
+  `df.residual()`, `deviance()`, `lrtest()`, and `HQIC()` methods for 
+  `simplexregression` objects; these generics now dispatch directly to
+  their `stats`/`lmtest` defaults. The Hannan-Quinn criterion is now
+  obtained via `ic()`.
+
 # SimplexRegression 0.1.5
 
 ## New features
 * Added the `AISRowing` dataset.
-* Added `r2()`, a function to compute [pseudo-]R² for `simplexregression`
+* Added `r2()`, a function to compute pseudo-R² for `simplexregression`
   model fits.
 
 ## Bug fixes, validation, and breaking changes

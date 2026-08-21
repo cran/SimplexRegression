@@ -102,17 +102,17 @@
 #' fit4 <- simplexreg(y ~ x1 + x2 | z1, data = data, link.mu = "probit")
 #'
 #' # Compare models with verbose output
-#' result <- penalized.ss(fit1, fit2, kappa = 0.1)
+#' result <- ss.penalized(fit1, fit2, kappa = 0.1)
 #'
 #' # Compare models silently
-#' result <- penalized.ss(fit1, fit2, kappa = 0.1, verbose = FALSE)
+#' result <- ss.penalized(fit1, fit2, kappa = 0.1, verbose = FALSE)
 #'
 #' # Use standard Scout Score (no parametric link penalty)
-#' result <- penalized.ss(fit1, fit2, fit3, fit4, kappa = 0)
+#' result <- ss.penalized(fit1, fit2, fit3, fit4, kappa = 0)
 #'
-#' @seealso \code{\link{penalized.ic}}
+#' @seealso \code{\link{ic.penalized}}
 #' @export
-penalized.ss <- function(..., kappa = 0.1, verbose = TRUE,
+ss.penalized <- function(..., kappa = 0.1, verbose = TRUE,
                          digits = max(3, getOption("digits") - 3)) {
 
   models <- list(...)

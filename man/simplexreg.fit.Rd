@@ -243,6 +243,6 @@ Regression analysis of proportional data using simplex distribution.
 \seealso{
 \code{\link{summary.simplexregression}},
 \code{\link{predict.simplexregression}}, \code{\link{residuals.simplexregression}},
-\code{\link{penalized.ic}}, \code{\link{penalized.ss}},
+\code{\link{ic.penalized}}, \code{\link{ss.penalized}},
 \code{\link{scoretest}}
 }

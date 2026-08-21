@@ -121,15 +121,6 @@ test_that("logLik.simplexregression df attribute equals number of parameters", {
   expect_equal(attr(ll, "df"), p + q + 1L)  # +1 for lambda
 })
 
-# --- fitted ---
-
-test_that("fitted.simplexregression returns numeric vector of length n", {
-  fv <- fitted(fit_plogit1)
-  expect_true(is.numeric(fv))
-  expect_length(fv, n)
-  expect_true(all(fv > 0 & fv < 1))
-})
-
 # --- predict ---
 
 test_that("predict.simplexregression with no newdata equals fitted values", {
@@ -193,74 +184,6 @@ test_that("predict.simplexregression works with intercept-only dispersion '| 1'"
   pred <- predict(fit_disp1, newdata = newdat, type = "response")
   expect_length(pred, 2)
   expect_true(all(pred > 0 & pred < 1))
-})
-
-# --- nobs ---
-
-test_that("nobs.simplexregression returns correct number of observations", {
-  expect_equal(nobs(fit_plogit1), n)
-})
-
-# --- deviance ---
-
-test_that("deviance.simplexregression returns a positive finite scalar", {
-  d <- deviance(fit_plogit1)
-  expect_length(d, 1)
-  expect_true(is.finite(d))
-  expect_true(d > 0)
-})
-
-test_that("deviance.simplexregression works when y is NULL", {
-  fit_no_y <- fit_plogit1
-  fit_no_y$y <- NULL
-  d <- deviance(fit_no_y)
-  expect_true(is.finite(d))
-  expect_true(d > 0)
-})
-
-# --- AIC / BIC / HQIC ---
-
-test_that("AIC.simplexregression returns a finite scalar for a single model", {
-  a <- AIC(fit_plogit1)
-  expect_length(a, 1)
-  expect_true(is.finite(a))
-})
-
-test_that("AIC.simplexregression returns a data.frame for multiple models", {
-  result <- AIC(fit_plogit1, fit_logit)
-  expect_s3_class(result, "data.frame")
-  expect_named(result, c("df", "AIC"))
-  expect_equal(nrow(result), 2)
-})
-
-test_that("BIC.simplexregression returns a finite scalar for a single model", {
-  b <- BIC(fit_plogit1)
-  expect_length(b, 1)
-  expect_true(is.finite(b))
-})
-
-test_that("HQIC.simplexregression returns a finite scalar for a single model", {
-  h <- HQIC(fit_plogit1)
-  expect_length(h, 1)
-  expect_true(is.finite(h))
-})
-
-test_that("BIC >= AIC for the same model (penalty is larger)", {
-  expect_true(BIC(fit_plogit1) >= AIC(fit_plogit1))
-})
-
-test_that("BIC.simplexregression returns data.frame for multiple models", {
-  result <- BIC(fit_plogit1, fit_logit)
-  expect_s3_class(result, "data.frame")
-  expect_named(result, c("df", "BIC"))
-  expect_equal(nrow(result), 2)
-})
-
-test_that("HQIC.simplexregression returns data.frame for multiple models", {
-  result <- HQIC(fit_plogit1, fit_logit)
-  expect_s3_class(result, "data.frame")
-  expect_named(result, c("df", "HQIC"))
-  expect_equal(nrow(result), 2)
 })
 
 # --- hatvalues ---
@@ -328,12 +251,7 @@ test_that("simulate.simplexregression initializes RNG when .Random.seed does not
   expect_true(all(sim[[1]] > 0 & sim[[1]] < 1))
 })
 
-# --- formula / terms / model.matrix ---
-
-test_that("formula.simplexregression returns the model formula", {
-  f <- formula(fit_plogit1)
-  expect_true(inherits(f, "formula") || inherits(f, "Formula"))
-})
+# --- terms / model.matrix ---
 
 test_that("model.matrix.simplexregression returns the mean design matrix", {
   mm <- model.matrix(fit_plogit1, model = "mean")
@@ -417,14 +335,6 @@ test_that("model.matrix.simplexregression returns dispersion design matrix", {
   expect_equal(ncol(mm), ncol(fit_plogit1$sigma2.x))
 })
 
-# --- df.residual ---
-
-test_that("df.residual.simplexregression returns correct value", {
-  dfr <- df.residual(fit_plogit1)
-  expect_true(is.numeric(dfr))
-  expect_equal(dfr, fit_plogit1$df.residual)
-})
-
 # --- print.summary ---
 
 test_that("print.summary.simplexregression works without errors", {
@@ -480,12 +390,4 @@ test_that("coeftest.simplexregression works", {
   skip_if_not_installed("lmtest")
   ct <- coeftest(fit_plogit1)
   expect_s3_class(ct, "coeftest")
-})
-
-# --- lrtest (lmtest) ---
-
-test_that("lrtest.simplexregression works", {
-  skip_if_not_installed("lmtest")
-  lt <- lrtest(fit_plogit1, fit_logit)
-  expect_s3_class(lt, "anova")
 })

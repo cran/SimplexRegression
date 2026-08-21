@@ -47,15 +47,15 @@
 #' @return A data frame with rows named after the candidate models and four columns:
 #' \describe{
 #'   \item{\code{df}}{Number of estimated parameters.}
-#'   \item{\code{AICc}}{Penalized AIC value.}
-#'   \item{\code{BICc}}{Penalized BIC value.}
-#'   \item{\code{HQICc}}{Penalized HQIC value.}
+#'   \item{\code{AICp}}{Penalized AIC value.}
+#'   \item{\code{BICp}}{Penalized BIC value.}
+#'   \item{\code{HQICp}}{Penalized HQIC value.}
 #' }
 #' When \code{verbose = TRUE}, the results are also printed to the console and
 #' the data frame is returned invisibly. When \code{verbose = FALSE}, the data
 #' frame is returned visibly without printing.
 #' When \code{kappa = 0}, the columns are named \code{AIC}, \code{BIC}, and
-#' \code{HQIC} instead of \code{AICc}, \code{BICc}, and \code{HQICc}.
+#' \code{HQIC} instead of \code{AICp}, \code{BICp}, and \code{HQICp}.
 #'
 #' @examples
 #' # Simulate data
@@ -74,7 +74,7 @@
 #' fit2 <- simplexreg(y ~ x1 + x2 | z1, data = data, link.mu = "plogit2")
 #'
 #' # Compute penalized criteria
-#' penalized.ic(fit1, fit2)
+#' ic.penalized(fit1, fit2)
 #'
 #' @references
 #' Akaike, H. (1973). Information theory and an extension of the maximum
@@ -93,9 +93,9 @@
 #' Schwarz, G. E. (1978). Estimating the dimension of a model. \emph{Annals of
 #' Statistics}, \bold{6}(2), 461--464. \doi{10.1214/aos/1176344136}
 #'
-#' @seealso \code{\link{penalized.ss}}
+#' @seealso \code{\link{ss.penalized}}
 #' @export
-penalized.ic <- function(..., kappa = 0.1, verbose = TRUE,
+ic.penalized <- function(..., kappa = 0.1, verbose = TRUE,
                          digits = max(3, getOption("digits") - 3)) {
 
   models <- list(...)
@@ -163,9 +163,9 @@ penalized.ic <- function(..., kappa = 0.1, verbose = TRUE,
 
   result <- data.frame(
     df = df_values,
-    AICc = aic_values,
-    BICc = bic_values,
-    HQICc = hqic_values,
+    AICp = aic_values,
+    BICp = bic_values,
+    HQICp = hqic_values,
     row.names = model_names
   )
 
@@ -185,9 +185,9 @@ penalized.ic <- function(..., kappa = 0.1, verbose = TRUE,
 
     result_print <- data.frame(
       df = formatC(result[, 1], digits = 0, format = "f"),
-      AICc = formatC(result[, 2], digits = digits, format = "f"),
-      BICc = formatC(result[, 3], digits = digits, format = "f"),
-      HQICc = formatC(result[, 4], digits = digits, format = "f"),
+      AICp = formatC(result[, 2], digits = digits, format = "f"),
+      BICp = formatC(result[, 3], digits = digits, format = "f"),
+      HQICp = formatC(result[, 4], digits = digits, format = "f"),
       row.names = rownames(result)
     )
 

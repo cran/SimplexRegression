@@ -110,8 +110,8 @@ recorded in Brasília, Brazil ($n = 312$ observations). The analysis covers:
 - data preparation and exploratory summary;
 - fitting simplex regression models with **parametric** and **fixed** mean
   link functions;
-- link function selection via the **penalized Scout Score** (`penalized.ss`)
-  and **penalized information criteria** (`penalized.ic`);
+- link function selection via the **penalized Scout Score** (`ss.penalized`)
+  and **penalized information criteria** (`ic.penalized`);
 - **likelihood ratio test** for nested models (`lrtest`);
 - score test for $H_0\!: \lambda = 1$ (`scoretest`);
 - specification testing with the **RESET test** (`resettest`);
@@ -215,19 +215,19 @@ fit_p2 <- simplexreg(formula, data = RH, link.mu = "plogit2")
 ## Penalized Scout Score and information criteria
 
 When comparing models that all use a parametric link, the **penalized Scout
-Score** (`penalized.ss`) and **penalized information criteria**
-(`penalized.ic`) are recommended. These functions incorporate an additional
+Score** (`ss.penalized`) and **penalized information criteria**
+(`ic.penalized`) are recommended. These functions incorporate an additional
 penalty controlled by `kappa` (default `kappa = 0.1`) that accounts for the
 complexity introduced by $\lambda$ relative to its deviation from the
 standard logit. The model with the highest Scout Score or lowest penalized
 criterion is selected. 
 
 ```{r penalized-ss-param}
-penalized.ss(fit_p1, fit_p2, kappa = 0.1)
+ss.penalized(fit_p1, fit_p2, kappa = 0.1)
 ```
 
 ```{r penalized-ic}
-penalized.ic(fit_p1, fit_p2, kappa = 0.1)
+ic.penalized(fit_p1, fit_p2, kappa = 0.1)
 ```
 
 All penalized criteria unanimously select the `plogit1` link. The Scout
@@ -257,7 +257,7 @@ the **unpenalized** version (`kappa = 0`) must be used, since the penalty
 for $\lambda$ is only meaningful when all candidates use a parametric link.
 
 ```{r penalized-ss-all}
-penalized.ss(
+ss.penalized(
   fit_loglog, fit_logit, fit_probit,
   fit_cauchit, fit_cloglog, fit_p1,
   kappa = 0
@@ -273,7 +273,7 @@ analyses.
 The `summary` method provides a standard regression output: estimated
 coefficients for the mean and dispersion submodels, standard errors, Wald
 $z$-statistics and $p$-values, the maximized log-likelihood, information
-criteria (AIC, BIC, HQIC), pseudo-$R^2$ measures, and details on the
+criteria (AIC, BIC), pseudo-$R^2$ measures, and details on the
 numerical optimization procedure.
 
 ```{r summary-fit}
@@ -290,14 +290,12 @@ followed by 7 Fisher scoring steps.
 
 # Standard Information Criteria
 
-The standard (unpenalized) AIC, BIC, and HQIC are accessible via the usual
-S3 generics and compare multiple models simultaneously. Lower values
-indicate a better trade-off between fit and complexity.
+The standard (unpenalized) AIC and BIC are accessible via the usual
+S3 generics. Lower values indicate a better trade-off between fit and complexity.
 
 ```{r aic-bic}
-AIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
-BIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
-HQIC(fit_loglog, fit_logit, fit_probit, fit_cauchit, fit_cloglog, fit_p1)
+AIC(fit_loglog); AIC(fit_logit); AIC(fit_probit); AIC(fit_cauchit); AIC(fit_cloglog); AIC(fit_p1)
+BIC(fit_loglog); BIC(fit_logit); BIC(fit_probit); BIC(fit_cauchit); BIC(fit_cloglog); BIC(fit_p1)
 ```
 
 The log-log model consistently achieves the lowest values across all three

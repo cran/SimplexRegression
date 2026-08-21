@@ -7,27 +7,18 @@
 \alias{coef.simplexregression}
 \alias{vcov.simplexregression}
 \alias{logLik.simplexregression}
-\alias{fitted.simplexregression}
 \alias{predict.simplexregression}
-\alias{nobs.simplexregression}
-\alias{df.residual.simplexregression}
-\alias{deviance.simplexregression}
-\alias{formula.simplexregression}
 \alias{terms.simplexregression}
+\alias{simulate.simplexregression}
 \alias{model.frame.simplexregression}
 \alias{model.matrix.simplexregression}
 \alias{update.simplexregression}
-\alias{simulate.simplexregression}
-\alias{AIC.simplexregression}
-\alias{BIC.simplexregression}
 \alias{hatvalues.simplexregression}
 \alias{bread.simplexregression}
 \alias{estfun.simplexregression}
 \alias{coeftest.simplexregression}
 \alias{lrtest.simplexregression}
 \alias{print.summary.simplexregression}
-\alias{HQIC}
-\alias{HQIC.simplexregression}
 \title{Methods for simplexregression Objects}
 \usage{
 \method{print}{simplexregression}(x, digits = max(3, getOption("digits") - 3), ...)
@@ -42,22 +33,12 @@
 
 \method{logLik}{simplexregression}(object, ...)
 
-\method{fitted}{simplexregression}(object, ...)
-
 \method{predict}{simplexregression}(
   object,
   newdata = NULL,
   type = c("response", "link", "dispersion"),
   ...
 )
-
-\method{nobs}{simplexregression}(object, ...)
-
-\method{df.residual}{simplexregression}(object, ...)
-
-\method{deviance}{simplexregression}(object, ...)
-
-\method{formula}{simplexregression}(x, ...)
 
 \method{terms}{simplexregression}(x, model = c("mean", "dispersion"), ...)
 
@@ -69,23 +50,13 @@
 
 \method{simulate}{simplexregression}(object, nsim = 1, seed = NULL, ...)
 
-\method{AIC}{simplexregression}(object, ..., k = 2)
-
-\method{BIC}{simplexregression}(object, ...)
-
-HQIC(object, ...)
-
-\method{HQIC}{simplexregression}(object, ...)
-
 \method{hatvalues}{simplexregression}(model, ...)
-
-\method{bread}{simplexregression}(x, ...)
 
 \method{estfun}{simplexregression}(x, ...)
 
-\method{coeftest}{simplexregression}(x, vcov. = NULL, df = Inf, ...)
+\method{bread}{simplexregression}(x, ...)
 
-\method{lrtest}{simplexregression}(object, ...)
+\method{coeftest}{simplexregression}(x, vcov. = NULL, df = Inf, ...)
 }
 \arguments{
 \item{digits}{Number of digits for printing.}
@@ -114,8 +85,6 @@ predictor (\code{"link"}) or fitted dispersion parameter (\code{"dispersion"}).}
 \item{seed}{an object specifying if and how the random number generator
 should be initialized.}
 
-\item{k}{weight of the penalty term in AIC. Default is \code{2}.}
-
 \item{vcov.}{a specification of the covariance matrix of the estimated coefficients.}
 
 \item{df}{the degrees of freedom to be used.}
@@ -130,19 +99,13 @@ The return value depends on the method called:
   \item \code{coef}: named numeric vector of coefficients;
   \item \code{vcov}: numeric matrix (variance-covariance);
   \item \code{logLik}: object of class \code{"logLik"};
-  \item \code{fitted}: numeric vector of fitted mean values;
   \item \code{predict}: numeric vector or list depending on \code{type};
-  \item \code{nobs}: integer scalar (number of observations);
-  \item \code{df.residual}: integer scalar (residual degrees of freedom);
-  \item \code{deviance}: numeric scalar (total deviance);
   \item \code{formula}: the model formula;
   \item \code{terms}: the model terms for the selected submodel;
   \item \code{model.frame}: a data frame;
   \item \code{model.matrix}: numeric matrix of regressors;
   \item \code{update}: fitted model or call depending on \code{evaluate};
   \item \code{simulate}: a data frame with \code{nsim} columns;
-  \item \code{AIC}, \code{BIC}, \code{HQIC}: numeric scalar (single model)
-    or data frame (multiple models);
   \item \code{hatvalues}: numeric vector of hat values;
   \item \code{bread}: numeric matrix;
   \item \code{estfun}: numeric matrix of score contributions;
@@ -164,10 +127,6 @@ summary(fit)
 coef(fit)
 vcov(fit)
 logLik(fit)
-fitted(fit)
-AIC(fit)
-BIC(fit)
-HQIC(fit)
 hatvalues(fit)
 
 }
