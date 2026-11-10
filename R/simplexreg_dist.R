@@ -146,21 +146,23 @@ psimplex <- function(q, mu, sigma2, lower.tail = TRUE, log.p = FALSE) {
     if (sigi < 0.001 | (1 - mui) * sigi < 0.01) {
       return(psimplex.norm(qi, mui, sigi^2, lower.tail = lower.tail, log.p = log.p))
     } else {
-      # Calls integration for each set of parameters
-      result <- integrate(dsimp, lower = 1e-8, upper = qi,
-                          mu_val = mui, sig_val = sigi)$value
-
-      if (!lower.tail) {
-        result <- 1 - result
+      # Strategy based on proximity to limits to avoid numerical error
+      if (qi <= 0.5) {
+        val <- integrate(dsimp, lower = 1e-8, upper = qi,
+                         mu_val = mui, sig_val = sigi,
+                         rel.tol = 1e-10, subdivisions = 500L)$value
+        res <- if (lower.tail) val else 1 - val
+      } else {
+        val <- integrate(dsimp, lower = qi, upper = 1 - 1e-8,
+                         mu_val = mui, sig_val = sigi,
+                         rel.tol = 1e-10, subdivisions = 500L)$value
+        res <- if (lower.tail) 1 - val else val
       }
-      if (log.p) {
-        result <- log(result)
-      }
 
-      return(result)
+      if (log.p) res <- log(res)
+      res
     }
   })
-
   return(pp)
 }
 

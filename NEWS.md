@@ -1,3 +1,8 @@
+# SimplexRegression 0.1.7
+
+## Bug fixes, validation, and breaking changes
+* Improved numerical accuracy and stability in `psimplex()` and `variance.simplex()`.
+
 # SimplexRegression 0.1.6
 
 ## New features

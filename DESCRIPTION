@@ -2,7 +2,7 @@ Type: Package
 Package: SimplexRegression
 Title: Simplex Regression Models with Parametric or Fixed Mean Link
         Functions
-Version: 0.1.6
+Version: 0.1.7
 Authors@R: c(
     person("Maria Eduarda da Cruz", "Justino", , "eueduardacruz@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9501-2642")),
@@ -42,6 +42,6 @@ LazyData: true
 LazyDataCompression: xz
 RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2026-08-20 13:33:32 UTC; euedu
+Packaged: 2026-11-10 19:14:39 UTC; euedu
 Repository: CRAN
-Date/Publication: 2026-08-21 05:45:35 UTC
+Date/Publication: 2026-11-10 19:40:02 UTC

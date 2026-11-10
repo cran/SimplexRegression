@@ -727,13 +727,7 @@ simplexreg.fit <- function(y, x, z, weights = NULL, offset = NULL,
   # ============================
   hessfun <- function(par, fit) {
     with(fit, {
-      # Safeguard y
-      y_safe <- pmin(pmax(y, 1e-6), 1 - 1e-6)
-
-      diff <- y_safe - mu
-      yoneminy <- y_safe * (1 - y_safe)
       muonemu <- mu * (1 - mu)
-      dev <- (diff / muonemu)^2 / yoneminy
 
       wi <- weights * ((3.0 * sigma2) / muonemu + (1 / (muonemu^3)))
       vi <- weights * (1 / (2 * sigma2^2))
@@ -780,7 +774,7 @@ simplexreg.fit <- function(y, x, z, weights = NULL, offset = NULL,
       ystar <- log(y / (1 - y))
       auxreg <- lm.wfit(x1, ystar, weights, offset)
       betaols <- auxreg$coefficients
-      muols <- exp(x1 %*% betaols) / (1 + exp(x1 %*% betaols))
+      muols <- exp(x1 %*% betaols + offset) / (1 + exp(x1 %*% betaols + offset))
       devtrans <- (y - muols)^2 / (y * (1 - y) * muols^2 * (1 - muols)^2)
       deltaols <- lm.wfit(z1, dispersion_link(devtrans, link.sigma2),
                           weights)$coefficients
@@ -791,7 +785,7 @@ simplexreg.fit <- function(y, x, z, weights = NULL, offset = NULL,
       ystar <- fixed_mean_link(y, link.mu)
       auxreg <- lm.wfit(x1, ystar, weights, offset)
       betaols <- auxreg$coefficients
-      muols <- fixed_mean_link_inv(x1 %*% betaols, link.mu)
+      muols <- fixed_mean_link_inv(x1 %*% betaols + offset, link.mu)
       devtrans <- (y - muols)^2 / (y * (1 - y) * muols^2 * (1 - muols)^2)
       deltaols <- lm.wfit(z1, dispersion_link(devtrans, link.sigma2),
                           weights)$coefficients
@@ -947,8 +941,8 @@ simplexreg.fit <- function(y, x, z, weights = NULL, offset = NULL,
 
   # Information criteria
   aic <- -2 * ll + 2 * r
-  bic <- -2 * ll + log(n) * r
-  hqic <- -2 * ll + 2 * r * log(log(n))
+  bic <- -2 * ll + log(nobs) * r
+  hqic <- -2 * ll + 2 * r * log(log(nobs))
 
   # ============================
   # RETURN OBJECT
@@ -985,8 +979,8 @@ simplexreg.fit <- function(y, x, z, weights = NULL, offset = NULL,
     sigma2.link = link.sigma2,
     sigma2.df = q,
     lambda.fv = lambda,
-    df.residual = n - r,
-    nobs = n,
+    df.residual = nobs - r,
+    nobs = nobs,
     loglik = ll,
     vcov = vcov,
     residuals = structure(quantile_res, names = seq_len(n)),

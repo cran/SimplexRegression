@@ -21,10 +21,6 @@
 #' where \eqn{a = \frac{1}{2\sigma^2[\mu(1-\mu)]^2}} and \eqn{\Gamma(\cdot,\cdot)}
 #' is the upper incomplete gamma function.
 #'
-#' For large values of \eqn{a (> 700)}, an asymptotic approximation is used
-#' to avoid numerical overflow:
-#' \deqn{Var(Y) \approx \mu(1-\mu) - \frac{1}{\sqrt{2\sigma^2}} \sqrt{\frac{1}{a}}.}
-#'
 #' @return A numeric scalar or vector of variance values.
 #'
 #' @examples
@@ -49,7 +45,7 @@
 #' @importFrom stats pgamma
 #'
 #' @export
-variance.simplex <- function(mu, sigma2) {
+variance.simplex <- function (mu, sigma2) {
   # Input validation
   stopifnot(
     "parameter 'mu' must always be in (0, 1)" = all(mu > 0 & mu < 1),
@@ -59,15 +55,12 @@ variance.simplex <- function(mu, sigma2) {
   term1 <- mu * (1 - mu)
   a <- 1/(2*sigma2*term1^2)
 
-  # Compute adjustment term with numerical stability
-  # For large a (> 700), use asymptotic approximation to avoid overflow
-  term2 <- ifelse(a <= 700,
-                  1/sqrt(2*sigma2) * exp(a) * sqrt(pi) * pgamma(a, 0.5, lower.tail = FALSE),
-                  1/sqrt(2*sigma2) * sqrt(1 / a))
+  log_term2 <- a + pgamma(a, 0.5, lower.tail = FALSE, log.p = TRUE) +
+    0.5 * log(pi) - 0.5 * log(2 * sigma2)
+  term2 <- exp(log_term2)
 
-  tol <- 1e-10
-  simplex_variance <- ifelse(term2 < term1 - tol,
-                            term1 - term2,
-                            term1 - .Machine$double.eps)
+  tol <- .Machine$double.eps * 10 * pmax(abs(term1), abs(term2))
+  simplex_variance <- ifelse(term2 < term1 - tol, term1 - term2,
+                             term1 - .Machine$double.eps)
   return(simplex_variance)
 }

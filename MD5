@@ -1,15 +1,15 @@
-e9c60801a3f62fd8fb33ddc8f63c3f8c *DESCRIPTION
+31dfa6ba07f231526d055e112d787c21 *DESCRIPTION
 42fae3b0bba7ee91a9f2bba845b54ca8 *LICENSE
 3b0ee70b2c77f1c7388cd04345819242 *NAMESPACE
-4ed57fbf24f736ce7baa96bf4538cac7 *NEWS.md
+e1a74b8099166a3363ee493630d0ce67 *NEWS.md
 c5f110db587735568254f60caa7220b1 *R/abortionopposition.R
 9a0f28c8991e8e71969efd3316c64c9d *R/aisrowing.R
 ae226756790471b6a8d11047eace2d4a *R/biomass.R
 4930322f39589d45591d7e3fa21bea10 *R/readingskills.R
 205d4c47b6680e68a1138747477feb7f *R/relativehumidity.R
 f4422a74997bf48696e0d49b90c13eb5 *R/simplexreg_deviance.R
-37ec7cac967d273191e901f570545fa5 *R/simplexreg_dist.R
-3229cff4755576953ed54da65fd25b57 *R/simplexreg_fit.R
+7f1d766a0594a785aa2c5a1d0c9493a0 *R/simplexreg_dist.R
+f3660edecf66df09e0790a35c7bba701 *R/simplexreg_fit.R
 536807909fe77d6ebd084f47142be3ac *R/simplexreg_ic.R
 8958dd5b2128a1042018633ce5b4856e *R/simplexreg_influence.R
 03fc0b3179c90d6f9144e992973299eb *R/simplexreg_links.R
@@ -22,7 +22,7 @@ fee2d12d18e323cf58be1226c5a2c2e2 *R/simplexreg_r2.R
 deeaca37d35dc4e8460ada5e3a4612fe *R/simplexreg_residuals.R
 64187b5a1ca52adda762427bc2d6d54e *R/simplexreg_scoretest.R
 c333f7654eca7c7d2c91ce3607847d56 *R/simplexreg_sscriteria.R
-e1728bb6b41850cd01559ad22b2ffb7c *R/simplexreg_var.R
+961d2b728b244b0d73ecfaecd86cfb95 *R/simplexreg_var.R
 d54042561b90aafd8a9a202ea63e1e4b *build/partial.rdb
 5c1cd2c228a17b086677886a7ed502f9 *build/vignette.rds
 f29b9f8ddd605a0c04227833be872971 *data/AISRowing.rda
@@ -33,7 +33,7 @@ d31a9ce03c2c62cd5ad1df11f4cd9a59 *data/Biomass.rda
 87eb37f43791cd60818449905b1e3ed9 *inst/WORDLIST
 749783ab96ad863d1f6bcf8fc286daac *inst/doc/relative-humidity.R
 fb172946af41ceaacb5c4868e3b01cc5 *inst/doc/relative-humidity.Rmd
-e4d93abe667ee2d1823667e2d85f1524 *inst/doc/relative-humidity.html
+ab2a03924fa8f4086e14e072dd4be2b8 *inst/doc/relative-humidity.html
 20b6ca7dc2bc875d025589ca8e800789 *man/AISRowing.Rd
 089fca3298dbb07aa9ed661601f3d1a6 *man/AbortionOpposition.Rd
 85a587d54fadec96b7b739cc730d6291 *man/Biomass.Rd
@@ -63,7 +63,7 @@ a98f0901f41ae4b12131622b2b03cb02 *man/resettest.Rd
 a224ca6f887c96e5c293a72c3e2a4295 *man/simplexreg.methods.Rd
 b47d4a6ab9a7c66b61cca75aca4d5125 *man/simplexreg.nul.Rd
 174cbf3a35cd7ab8825211739b39933c *man/ss.penalized.Rd
-994361399543aec35c18a25cfadf553c *man/variance.simplex.Rd
+669cf5476df065d94b00dc8f51fa8732 *man/variance.simplex.Rd
 332173f20d20942c02019350ea4dcadc *tests/spelling.R
 1485054d55c6be0735473e7a5ddc2a61 *tests/testthat.R
 5c913169462a274692ec98cb689127f9 *tests/testthat/test-simplexreg_deviance.R
